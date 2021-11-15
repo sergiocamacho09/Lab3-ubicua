@@ -9,13 +9,18 @@ const io = require("socket.io")(server, {
   }
 });
 
-const STATIC_CHANNELS = ['global_notifications', 'global_chat'];
-
 //app.use(express.static('www'));
 
 io.on("connection", function(socket){
-  console.log("nuevo cliente");
-  socket.emit('connection',null);
+  var generate = require('project-name-generator');
+  var userName = generate().spaced;
+  console.log("nuevo cliente: " + userName);
+
+  socket.on("message_evt", function(message){
+    console.log(socket.id, message);
+    socket.broadcast.emit("message_evt", message);
+  });
+  
 });
 
 server.listen(3000, () => console.log('server started'));
