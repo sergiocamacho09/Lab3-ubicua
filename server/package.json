@@ -4,6 +4,7 @@
   "description": "Server's chat",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "node index.js"
   },
   "author": "Sergio Camacho Toledano",
