@@ -1,18 +1,24 @@
-import React, {useState, useEffect} from 'react';
-import { Socket } from 'socket.io-client';
-import socket from './Socket';
-
-const Chat = ({name}) =>{
+import React, { useState, useEffect } from 'react';
+import socket from "./Socket";
+export function Chat() {
     const [message, setMessage] = useState("");
-    const [messages, setMessages] = useState("");
+    const [messages, setMessages] = useState([]);
 
-    useEffect(() =>{
-        socket.emit("userConnected")
-    },[name]);
+
+    function handleOnClick() {
+        socket.emit("message_evt", { msg: message });
+    }
+
+    function handleOnChange(e) {
+        setMessage(e.target.value);
+    }
+
     return (
-        
+        <div className="NewMessage">
+
+            <input onChange={handleOnChange} placeholder="Mensaje"></input>
+            <button onClick={handleOnClick}>Enviar</button>
+
+        </div>
     );
 }
-
-
-export default Chat;

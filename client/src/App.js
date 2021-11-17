@@ -1,29 +1,22 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import { Chat } from "./components/Chat";
+import socket from "./components/Socket";
+const generate = require('project-name-generator');
+let newUser = generate().spaced;
 
 function App() {
-  const [message, setMessage] = useState("");
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    setSocket(() => {
-      return io("http://localhost:3000/");
-    });
-  }, []);
-
-  function handleOnClick() {
-    socket.emit("message_evt", { msg: message });
-  }
-
-  function handleOnChange(e) {
-    setMessage(e.target.value);
-  }
+ 
+  const [name, setName] = useState("");
+  useEffect(() =>{
+    setName(newUser);
+    socket.emit("newUser", newUser);
+  },[]);
   
   return (
     <div className="App">
-      <input type="text" onChange={handleOnChange}></input>
-      <button onClick={handleOnClick}>send</button>
+      <p>Bienvenido  {name}</p>
+      <Chat />
     </div>
   );
 }
@@ -45,5 +38,6 @@ socket.on("message_evt", function(message){
   msg.innerHTML = message.msg;
 });
 */
-  
+
+
 
