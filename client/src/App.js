@@ -2,21 +2,29 @@ import "./App.css";
 import { useState, useEffect, useRef } from "react";
 import { Chat } from "./components/Chat";
 import socket from "./components/Socket";
-const generate = require('project-name-generator');
-let newUser = generate().spaced;
+const Chance = require('chance');
+const generate = new Chance();
 
 function App() {
- 
+
   const [name, setName] = useState("");
-  useEffect(() =>{
+  useEffect(() => {
+    let newUser = generate.name();
     setName(newUser);
     socket.emit("newUser", newUser);
-  },[]);
-  
+  }, []);
+
   return (
     <div className="App">
-      <p>Bienvenido  {name}</p>
-      <Chat />
+      <div id="Header">
+        <div id="UserName">
+          {name}
+        </div>
+      </div>
+      <div>
+        
+      </div>
+      <Chat name={name} />
     </div>
   );
 }

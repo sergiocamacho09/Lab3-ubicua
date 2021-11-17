@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import socket from "./Socket";
-export function Chat() {
+
+/* Auxiliary array that contains all messages of the main chat */
+let mainChat = []
+export function Chat({ name }) {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
 
+    useEffect(() => {
+        setMessages(mainChat);
+    }, [mainChat]);
 
     function handleOnClick() {
+        mainChat.push(message);
+        console.log(messages);
         socket.emit("message_evt", { msg: message });
     }
 
@@ -15,10 +23,10 @@ export function Chat() {
 
     return (
         <div className="NewMessage">
-
-            <input onChange={handleOnChange} placeholder="Mensaje"></input>
-            <button onClick={handleOnClick}>Enviar</button>
-
+            <div id="MessageContainer">
+                <input id="Message" onChange={handleOnChange} placeholder="Mensaje"></input>
+                <button id="ButtonMessage" onClick={handleOnClick}>Enviar</button>
+            </div>
         </div>
     );
 }
