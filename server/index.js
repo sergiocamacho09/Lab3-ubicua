@@ -20,6 +20,8 @@ io.on("connection", function (socket) {
     console.log(usersConnected);
   })
 
+  socket.emit("userList", usersConnected);
+
   socket.on("message_evt", function (message) {
     console.log(socket.id, message);
     socket.broadcast.emit("message_evt", message);

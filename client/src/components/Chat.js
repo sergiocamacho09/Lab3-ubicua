@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import socket from "./Socket";
 
+
 /* Auxiliary array that contains all messages of the main chat */
 let mainChat = []
-export function Chat({ name }) {
+export function Chat() {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
 

@@ -6,7 +6,6 @@ const Chance = require('chance');
 const generate = new Chance();
 
 function App() {
-
   const [name, setName] = useState("");
   useEffect(() => {
     let newUser = generate.name();
@@ -20,11 +19,12 @@ function App() {
         <div id="UserName">
           {name}
         </div>
+
       </div>
-      <div>
-        
+      <div className="ViewMessages">
+
       </div>
-      <Chat name={name} />
+      <Chat />
     </div>
   );
 }
