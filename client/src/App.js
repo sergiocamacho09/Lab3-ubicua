@@ -4,14 +4,20 @@ import { Chat } from "./components/Chat";
 import socket from "./components/Socket";
 const Chance = require('chance');
 const generate = new Chance();
+let users = [];
 
+let message = "";
 function App() {
   const [name, setName] = useState("");
+  const [userList, setUsers] = useState([]);
+
   useEffect(() => {
     let newUser = generate.name();
     setName(newUser);
     socket.emit("newUser", newUser);
   }, []);
+
+
 
   return (
     <div className="App">
@@ -21,10 +27,13 @@ function App() {
         </div>
 
       </div>
+      <div id="GlobalMessage">
+
+      </div>
       <div className="ViewMessages">
 
       </div>
-      <Chat />
+      <Chat name={name} />
     </div>
   );
 }

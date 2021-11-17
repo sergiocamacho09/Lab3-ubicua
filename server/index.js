@@ -22,9 +22,9 @@ io.on("connection", function (socket) {
 
   socket.emit("userList", usersConnected);
 
-  socket.on("message_evt", function (message) {
-    console.log(socket.id, message);
-    socket.broadcast.emit("message_evt", message);
+  socket.on("message_evt",(name, msg) => {
+    console.log(socket.id, {user: name , msg: msg});
+    socket.broadcast.emit("message_evt", name, msg);
   });
 
 });

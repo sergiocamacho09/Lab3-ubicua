@@ -4,7 +4,7 @@ import socket from "./Socket";
 
 /* Auxiliary array that contains all messages of the main chat */
 let mainChat = []
-export function Chat() {
+export function Chat(props) {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
 
@@ -15,7 +15,7 @@ export function Chat() {
     function handleOnClick() {
         mainChat.push(message);
         console.log(messages);
-        socket.emit("message_evt", { msg: message });
+        socket.emit("message_evt",props.name, message);
     }
 
     function handleOnChange(e) {
