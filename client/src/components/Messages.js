@@ -1,36 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import socket from './Socket';
 
-let messageList = [];
-export function Messages(props) {
+// let messageList = [];
+export function Messages({name}) {
     /*That array saves all current app messages*/
     const [messages, setMessages] = useState([]);
 
-
-    socket.on("message_evt", (array) => {
-        messageList = array;
-        setMessages(messageList);
-        messageList = []
-        console.log(messages);
-    });
-
     useEffect(() => {
-        printMessages();
+        socket.on("message_evt", (msgObject) => {
+            setMessages([...messages, msgObject]);
+        })
+        return () => { socket.off() };
     }, [messages]);
 
-    function printMessages() {
-        let div = document.getElementById("MessageContainer");
-        for (var i = 0; i < messages.length; i++) {
-            if (messages[i].user === props.name) {
-                div.innerHTML += "<div class='MyMessageContainer'><div class='myMessage'>" + messages[i].msg + "</div></div>"
-            } else {
-                div.innerHTML += "<div class='ExternalMessageContainer'><div class='externalMessage'>" + messages[i].msg + "</div></div>"
-            }
-        }
-    }
-    return (
-        <div id="MessageContainer">
+    function CheckUser() {
 
+        // messages.map((message) => {
+        //     if (message.user === props.user) {
+        //         return (
+        //             <div className="MyMessageContainer">
+        //                 <p>{message.msg}</p>
+        //             </div>
+        //         );
+        //     } else {
+        //         return (
+        //             <div className="ExternalMessageContainer">
+        //                 <p>{message.msg}</p>
+        //             </div>
+        //         )
+        //     }
+        // })
+
+
+
+        return (
+            <div className="MyMessageContainer">
+                {messages.name !== {name} &&
+                    <div className_="externalMessage">
+                        {messages.map((messages, i) => <p key={i} >{messages.msg}</p>)}
+                    </div>
+                }
+                {messages.name === {name} &&
+                    <div className="myMessage">
+                        {messages.map((messages, i) => <p key={i} >{messages.msg}</p>)}
+                    </div>
+
+                }
+            </div>
+        );
+        // } else {
+        //     return (
+        //         <div className="ExternalMessageContainer">
+        //             {messages.map((messages, i) => <div key={i} className="externalMessage">{messages.msg}</div>)}
+        //         </div>
+
+        //     )
+        // }
+    }
+
+    return (
+        <div>
+            <CheckUser />
         </div>
     );
 
