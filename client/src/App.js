@@ -17,7 +17,30 @@ function App() {
     socket.emit("newUser", newUser);
   }, []);
 
+  useEffect(()=>{
+    
+    printUsers();
+  },[userList]);
 
+  function printUsers(){
+    let div = document.getElementById("GlobalMessage");
+    div.innerHTML = "";
+    for(var i = 0; i < userList.length; i++){
+      if(userList[i] !== name){
+        div.innerHTML += "<div>" + userList[i] + "</div>";
+      }
+    }
+    console.log(userList);
+  }
+
+
+  function loadUsers(){
+    socket.emit("usersConnected");
+    socket.on("userList", (array)=>{
+      users = array;
+      setUsers(users);
+    });
+  }
 
   return (
     <div className="App">
@@ -25,7 +48,9 @@ function App() {
         <div id="UserName">
           {name}
         </div>
-
+        <div id="ViewUsers">
+          <button id="ToggleButton" onClick={loadUsers}>Users</button>
+        </div>
       </div>
       <div id="GlobalMessage">
 

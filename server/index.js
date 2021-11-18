@@ -18,9 +18,11 @@ io.on("connection", function (socket) {
     console.log("nuevo usuario: " + data);
     usersConnected.push(data);
     console.log(usersConnected);
-  })
+  });
 
-  socket.emit("userList", usersConnected);
+  socket.on("usersConnected", () =>{
+    socket.emit("userList", usersConnected);
+  })
 
   socket.on("message_evt",(name, msg) => {
     console.log(socket.id, {user: name , msg: msg});
