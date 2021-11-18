@@ -10,6 +10,7 @@ let message = "";
 function App() {
   const [name, setName] = useState("");
   const [userList, setUsers] = useState([]);
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     let newUser = generate.name();
@@ -17,29 +18,35 @@ function App() {
     socket.emit("newUser", newUser);
   }, []);
 
-  useEffect(()=>{
-    
-    printUsers();
-  },[userList]);
+  useEffect(() => {
 
-  function printUsers(){
+    printUsers();
+  }, [userList]);
+
+  function printUsers() {
+    console.log(toggle);
     let div = document.getElementById("GlobalMessage");
-    div.innerHTML = "";
-    for(var i = 0; i < userList.length; i++){
-      if(userList[i] !== name){
-        div.innerHTML += "<div>" + userList[i] + "</div>";
+    if (toggle) {
+      div.innerHTML = "";
+      for (var i = 0; i < userList.length; i++) {
+        if (userList[i] !== name) {
+          div.innerHTML += "<div>" + userList[i] + "</div>";
+        }
       }
+      console.log(userList);
+    }else{
+      div.innerHTML ="";
     }
-    console.log(userList);
   }
 
 
-  function loadUsers(){
+  function loadUsers() {
     socket.emit("usersConnected");
-    socket.on("userList", (array)=>{
+    socket.on("userList", (array) => {
       users = array;
       setUsers(users);
     });
+    setToggle((toggle) => !toggle);
   }
 
   return (
