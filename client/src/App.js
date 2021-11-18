@@ -1,7 +1,8 @@
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
-import { Chat } from "./components/Chat";
+import { useState, useEffect } from "react";
+import { InputMessages } from "./components/InputMessages";
 import socket from "./components/Socket";
+import { Messages } from "./components/Messages";
 const Chance = require('chance');
 const generate = new Chance();
 let users = [];
@@ -18,24 +19,22 @@ function App() {
     socket.emit("newUser", newUser);
   }, []);
 
-  useEffect(() => {
+  /*Code used to show all the users that they are already connected*/
 
+  useEffect(() => {
     printUsers();
   }, [userList]);
 
   function printUsers() {
-    console.log(toggle);
-    let div = document.getElementById("GlobalMessage");
+    let div = document.getElementById("UsersList");
     if (toggle) {
-      div.innerHTML = "";
       for (var i = 0; i < userList.length; i++) {
         if (userList[i] !== name) {
-          div.innerHTML += "<div>" + userList[i] + "</div>";
+          div.innerHTML += "<div class='AppUser'>" + userList[i] + "</div>";
         }
       }
-      console.log(userList);
-    }else{
-      div.innerHTML ="";
+    } else {
+      div.innerHTML = "";
     }
   }
 
@@ -55,17 +54,15 @@ function App() {
         <div id="UserName">
           {name}
         </div>
+        <div id="UsersList">
+
+        </div>
         <div id="ViewUsers">
           <button id="ToggleButton" onClick={loadUsers}>Users</button>
         </div>
       </div>
-      <div id="GlobalMessage">
-
-      </div>
-      <div className="ViewMessages">
-
-      </div>
-      <Chat name={name} />
+      <Messages name={name}/>
+      <InputMessages name={name} />
     </div>
   );
 }

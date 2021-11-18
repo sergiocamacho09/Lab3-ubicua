@@ -4,7 +4,7 @@ import socket from "./Socket";
 
 /* Auxiliary array that contains all messages of the main chat */
 let mainChat = []
-export function Chat(props) {
+export function InputMessages(props) {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
 
@@ -14,8 +14,9 @@ export function Chat(props) {
 
     function handleOnClick() {
         mainChat.push(message);
-        console.log(messages);
         socket.emit("message_evt",props.name, message);
+        console.log(messages);
+        document.getElementById("Message").value ="";
     }
 
     function handleOnChange(e) {
@@ -24,7 +25,7 @@ export function Chat(props) {
 
     return (
         <div className="NewMessage">
-            <div id="MessageContainer">
+            <div id="MessageInputContainer">
                 <input id="Message" onChange={handleOnChange} placeholder="Mensaje"></input>
                 <button id="ButtonMessage" onClick={handleOnClick}>Enviar</button>
             </div>

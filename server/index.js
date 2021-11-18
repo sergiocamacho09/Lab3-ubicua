@@ -10,6 +10,7 @@ const io = require("socket.io")(server, {
 });
 
 let usersConnected = [];
+let messageList = [];
 
 //app.use(express.static('www'));
 
@@ -25,8 +26,8 @@ io.on("connection", function (socket) {
   })
 
   socket.on("message_evt",(name, msg) => {
-    console.log(socket.id, {user: name , msg: msg});
-    socket.broadcast.emit("message_evt", name, msg);
+    messageList.push({user: name , msg: msg});
+    socket.broadcast.emit("message_evt", messageList);
   });
 
 });
