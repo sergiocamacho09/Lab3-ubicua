@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import socket from "./Socket";
 
+/*Saving the last message in order to check is empty*/
+let lastMessge = "";
+
 export function InputMessages(props) {
     const [message, setMessage] = useState("");
 
     function handleOnClick() {
-        socket.emit("message_evt", props.name, message);
-        document.getElementById("Message").value = "";
+        if (lastMessge !== "") {
+            socket.emit("message_evt", props.name, message);
+            document.getElementById("Message").value = "";
+            lastMessge = "";
+        }
+
     }
 
     function handleOnChange(e) {
         setMessage(e.target.value);
+        lastMessge = e.target.value;
+        console.log(lastMessge);
     }
 
     return (

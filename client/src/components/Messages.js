@@ -13,56 +13,6 @@ export function Messages(props) {
         return () => { socket.off() };
     }, [messages]);
 
-    // function CheckUser() {
-
-    //     // {
-    //     //     messages.map((message) => {
-    //     //         if (message.name === props.name) {
-    //     //             return (
-    //     //                 <div className="MyMessageContainer">
-    //     //                     <p>{message.msg}</p>
-    //     //                 </div>
-    //     //             );
-    //     //         } else {
-    //     //             return (
-    //     //                 <div className="ExternalMessageContainer">
-    //     //                     <p>{message.msg}</p>
-    //     //                 </div>
-    //     //             )
-    //     //         }
-    //     //     })
-    //     // }
-
-
-
-
-    //     // <div className="MyMessageContainer">
-    //     //     {messages.map((msg) => {
-    //     //         msg.name !== props.name &&
-
-    //     //             <div className_="externalMessage">
-    //     //                 {messages.map((messages, i) => <p key={i} >{messages.msg}</p>)}
-    //     //             </div>
-    //     //     })}
-
-
-    //     //     {messages.map((msg) => {
-    //     //         msg.name === props.name &&
-    //     //             <div className="myMessage">
-    //     //                 {messages.map((messages, i) => <p key={i} >{messages.msg}</p>)}
-    //     //             </div>
-    //     //     })}
-    //     // </div>
-
-    //     // } else {
-    //     //     return (
-    //     //         <div className="ExternalMessageContainer">
-    //     //             {messages.map((messages, i) => <div key={i} className="externalMessage">{messages.msg}</div>)}
-    //     //         </div>
-
-    //     //     )
-    //     // }
-    // }
 
     return (
         <div id="GlobalChat">
@@ -80,6 +30,7 @@ export function Messages(props) {
                     return (
                         <div className="ExternalMessageContainer">
                             <div className="externalMessage">
+                                <p className="userName">{msg.name}</p>
                                 <p key={i}>{msg.msg}</p>
                             </div>
                         </div>

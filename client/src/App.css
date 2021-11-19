@@ -23,6 +23,12 @@
   padding:5px 5px ;
 }
 
+.userName{
+  font-size: small;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .NewMessage{
   display: flex;
   flex-direction: column;
@@ -61,6 +67,8 @@
 #GlobalChat{
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
   margin: 4px 2px;
 }
 
