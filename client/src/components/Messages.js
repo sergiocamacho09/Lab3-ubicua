@@ -65,19 +65,25 @@ export function Messages(props) {
     // }
 
     return (
-        <div className="MyMessageContainer">
+        <div id="GlobalChat">
             {messages.map((msg, i) => {
                 if (msg.name === props.name) {
                     return (
-                        <div className="myMessage">
-                            <p key={i}>{msg.msg}</p>
+                        <div className="MyMessageContainer">
+                            <div className="myMessage">
+                                <p key={i}>{msg.msg}</p>
+                            </div>
                         </div>
+
                     );
                 } else {
                     return (
-                        <div className_="externalMessage">
-                            <p key={i}>{msg.msg}</p>
+                        <div className="ExternalMessageContainer">
+                            <div className="externalMessage">
+                                <p key={i}>{msg.msg}</p>
+                            </div>
                         </div>
+
                     );
                 }
             })
