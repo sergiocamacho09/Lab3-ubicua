@@ -23,6 +23,21 @@
   padding:5px 5px ;
 }
 
+#HomePageContent{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#UsersList{
+  display:flex;
+  justify-content: center;
+  
+  background-color: rebeccapurple;
+  width: 50%;
+  margin: 4px;
+}
+
 .userName{
   font-size: small;
   font-weight: bold;
