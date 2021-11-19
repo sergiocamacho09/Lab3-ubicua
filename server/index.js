@@ -27,7 +27,7 @@ io.on("connection", function (socket) {
 
   socket.on("message_evt",(name, msg) => {
     //messageList.push({user: name , msg: msg});
-    io.emit("message_evt", { name , msg});
+    io.sockets.emit("message_evt", { name , msg});
   });
 
 });
