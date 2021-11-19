@@ -30,6 +30,11 @@ io.on("connection", function (socket) {
     io.sockets.emit("message_evt", { name , msg});
   });
 
+  socket.on("globalChat", (data) =>{
+    socket.emit("inGlobalChat", true, data);
+  });
+
+
 });
 
 server.listen(3000, () => console.log('server started'));

@@ -21,6 +21,9 @@ export function HomePage() {
         });
     })
 
+    function globalChat(){
+        socket.emit("globalChat", name);
+    }
     return (
         <div id="HomePageContainer">
             <div id="Header">
@@ -29,12 +32,16 @@ export function HomePage() {
                 </div>
             </div>
             <div id="HomePageContent">
+                <div id="GlobalChatButton">
+                    <button id="GoToGlobalChat" onClick={globalChat}>Global Chat</button>
+                </div>
                 {userList.map((user, i) => {
                     if (user !== name) {
                         return (
-                            <div id="UsersList">
-                                <p>{user}</p>
-                                <button>Chat privado</button>
+                            <div className="UsersList">
+                                <div className="User">
+                                    <button className="PrivateChatButton">{user}</button>
+                                </div>
                             </div>
                         )
                     }

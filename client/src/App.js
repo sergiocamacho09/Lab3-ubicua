@@ -4,43 +4,23 @@ import { InputMessages } from "./components/InputMessages";
 import socket from "./components/Socket";
 import { Messages } from "./components/Messages";
 import { HomePage } from "./components/HomePage";
-
-let users = [];
+import { GlobalChat } from "./components/GlobalChat";
 
 function App() {
-
-  /*Code used to show all the users that they are already connected*/
-
-  // useEffect(() => {
-  //   printUsers();
-  // }, [userList]);
-
-  // function printUsers() {
-  //   let div = document.getElementById("UsersList");
-  //   if (toggle) {
-  //     for (var i = 0; i < userList.length; i++) {
-  //       if (userList[i] !== name) {
-  //         div.innerHTML += "<div class='AppUser'>" + userList[i] + "</div>";
-  //       }
-  //     }
-  //   } else {
-  //     div.innerHTML = "";
-  //   }
-  // }
-
-
-  // function loadUsers() {
-  //   socket.emit("usersConnected");
-  //   socket.on("userList", (array) => {
-  //     users = array;
-  //     setUsers(users);
-  //   });
-  //   setToggle((toggle) => !toggle);
-  // }
+  const [globalChat, setGlobalChat] = useState(false);
+  socket.on("inGlobalChat", (boolean, userName) => {
+    setGlobalChat(boolean);
+  })
 
   return (
     <div className="App">
-      <HomePage/>
+      {!globalChat &&
+        <HomePage />
+
+      }
+      {globalChat &&
+        <GlobalChat />
+      }
       {/* <div id="Header">
         <div id="UserName">
           {name}

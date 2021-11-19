@@ -23,19 +23,36 @@
   padding:5px 5px ;
 }
 
+#HomePageContainer{
+  height:100%;
+}
+
 #HomePageContent{
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#UsersList{
+.UsersList{
   display:flex;
   justify-content: center;
-  
-  background-color: rebeccapurple;
-  width: 50%;
-  margin: 4px;
+  font-size: 12px;
+  width: 70%;
+  margin: 3px 0px;
+}
+
+.User{
+  display: flex;
+  justify-content: center;
+}
+
+.PrivateChatButton{
+  border-radius: 10px;
+}
+
+#GoToGlobalChat{
+  margin-top:3px;
+  border-radius: 10px;
 }
 
 .userName{
