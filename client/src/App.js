@@ -5,28 +5,59 @@ import socket from "./components/Socket";
 import { Messages } from "./components/Messages";
 import { HomePage } from "./components/HomePage";
 import { GlobalChat } from "./components/GlobalChat";
+const Chance = require('chance');
+const generate = new Chance();
 
 function App() {
-  const [globalChat, setGlobalChat] = useState(false);
   const [name, setName] = useState("");
+  const [userList, setUsers] = useState([]);
+
+  const [messages, setMessages] = useState([]);
+
   useEffect(() => {
-    socket.on("inGlobalChat", (boolean, userName) => {
-      setGlobalChat(boolean);
-      setName(userName);
+    let isCancelled = false;
+    if (!isCancelled) {
+      let newUser = generate.name();
+      setName(newUser);
+      socket.emit("newUser", newUser);
+    }
+    // socket.emit("usersConnected");
+    // socket.on("userList", (array) => {
+    //   setUsers(array);
+    // });
+    console.log("ENTRA");
+    return () => isCancelled = true;
+  }, []);
+
+  useEffect(() => {
+    socket.emit("usersConnected");
+    socket.on("userList", (array) => {
+      setUsers(array);
+    });
+  });
+
+
+  useEffect(() => {
+    socket.on("message_evt", (msgObject) => {
+      setMessages([...messages, msgObject]);
     })
-  })
+    return () => { socket.off() };
+  }, []);
 
 
+  
   return (
     <div className="App">
-      {!globalChat &&
-        <HomePage />
-
+      <HomePage name={name} userlist={userList} msgs={messages}/>
+      {/* {globalChat === "HomePage" &&
+        <div>
+          <button onClick={<ChangeScreen newPage="GlobalChat"/>}>Global Chat</button>
+          <HomePage name={name} userlist={userList} messages={messages} /></div>
       }
-      {globalChat &&
-        <GlobalChat name={name}/>
-        }
-          {/* <div id="Header">
+      {/* {globalChat === "GlobalChat" && */}
+        {/* <GlobalChat name={name} />
+      } */} 
+      {/* <div id="Header">
         <div id="UserName">
           {name}
         </div>
@@ -37,7 +68,7 @@ function App() {
           <button id="ToggleButton" onClick={loadUsers}>Users</button>
         </div>
       </div> */}
-          {/* <Messages name={name}/>
+      {/* <Messages name={name}/>
       <InputMessages name={name} /> */}
     </div>
   );

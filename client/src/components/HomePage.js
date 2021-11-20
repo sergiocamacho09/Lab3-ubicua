@@ -1,56 +1,59 @@
 import React, { useState, useEffect } from "react";
+import { GlobalChat } from "./GlobalChat";
+import { PrivateChat } from "./PrivateChat";
 import socket from "./Socket";
-const Chance = require('chance');
-const generate = new Chance();
 
-export function HomePage() {
-    const [name, setName] = useState("");
-    const [userList, setUsers] = useState([]);
+export function HomePage(props) {
+    const [globalChat, setGlobalChat] = useState("HomePage");
 
-
-    useEffect(() => {
-        let isCancelled = false;
-        if (!isCancelled) {
-            let newUser = generate.name();
-            setName(newUser);
-            socket.emit("newUser", newUser);
-        }
-        return () => isCancelled = true;
-    }, []);
-
-    useEffect(() => {
-        socket.emit("usersConnected");
-        socket.on("userList", (array) => {
-            setUsers(array);
-        });
-    })
-
-    function globalChat() {
-        socket.emit("globalChat", name);
+    function goGlobalChat() {
+        setGlobalChat("GlobalChat");
     }
+    function goHomePage() {
+        setGlobalChat("HomePage");
+    }
+
+    function goPrivateChat() {
+        setGlobalChat("PrivateChat");
+    }
+
     return (
         <div id="HomePageContainer">
             <div id="Header">
                 <div id="UserName">
-                    {name}
+                    {props.name}
                 </div>
+                {globalChat !== "HomePage" &&
+                    <button onClick={goHomePage}>🡰</button>
+                }
             </div>
-            <div id="HomePageContent">
+            {globalChat === "HomePage" &&
+                <div id="HomePageContent">
                 <div id="GlobalChatButton">
-                    <button id="GoToGlobalChat" onClick={globalChat}>Global Chat</button>
+                    <button id="GoToGlobalChat" onClick={ goGlobalChat}>Global Chat</button>
                 </div>
-                {userList.map((user, i) => {
-                    if (user !== name) {
+                {props.userlist.map((user, i) => {
+                    if (user.name !== props.name) {
                         return (
                             <div className="UsersList">
                                 <div className="User">
-                                    <button className="PrivateChatButton">{user}</button>
+                                    <button className="PrivateChatButton" onClick={goPrivateChat}>{user.name}</button>
                                 </div>
                             </div>
                         )
                     }
                 })}
             </div>
+            }
+            
+
+            {globalChat === "GlobalChat" &&
+
+                <GlobalChat name={props.name} messages={props.msgs}/>
+            }
+            {globalChat === "PrivateChat" &&
+                <PrivateChat />
+            }
 
         </div>
     )

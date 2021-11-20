@@ -7,11 +7,8 @@ export function Messages(props) {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        socket.on("message_evt", (msgObject) => {
-            setMessages([...messages, msgObject]);
-        })
-        return () => { socket.off() };
-    }, [messages]);
+        setMessages([...messages,props.messages]);
+    },[]);
 
 
     return (

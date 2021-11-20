@@ -19,7 +19,6 @@ export function InputMessages(props) {
     function handleOnChange(e) {
         setMessage(e.target.value);
         lastMessge = e.target.value;
-        console.log(lastMessge);
     }
 
     return (

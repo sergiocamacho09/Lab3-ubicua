@@ -10,15 +10,16 @@ const io = require("socket.io")(server, {
 });
 
 let usersConnected = [];
+let userObject = null;
 //let messageList = [];
 
 //app.use(express.static('www'));
 
 io.on("connection", function (socket) {
-  socket.on("newUser", (data) => {
-    console.log("nuevo usuario: " + data);
-    usersConnected.push(data);
-    console.log(usersConnected);
+  socket.on("newUser", (name) => {
+    console.log("nuevo usuario: " + name +" en el socket " +socket.id);
+    userObject = {name: name,id: socket.id};
+    usersConnected.push(userObject);
   });
 
   socket.on("usersConnected", () =>{
@@ -30,10 +31,13 @@ io.on("connection", function (socket) {
     io.sockets.emit("message_evt", { name , msg});
   });
 
-  socket.on("globalChat", (data) =>{
-    socket.emit("inGlobalChat", true, data);
+  socket.on("globalChat", (actualPage, name) =>{
+    socket.emit("inGlobalChat", actualPage, name);
   });
 
+  socket.on("disconnect", ()=>{
+    console.log("Usuario desconectado del socket: " + socket.id);
+  })
 
 });
 
