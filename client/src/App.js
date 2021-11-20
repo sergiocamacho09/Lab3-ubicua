@@ -8,9 +8,14 @@ import { GlobalChat } from "./components/GlobalChat";
 
 function App() {
   const [globalChat, setGlobalChat] = useState(false);
-  socket.on("inGlobalChat", (boolean, userName) => {
-    setGlobalChat(boolean);
+  const [name, setName] = useState("");
+  useEffect(() => {
+    socket.on("inGlobalChat", (boolean, userName) => {
+      setGlobalChat(boolean);
+      setName(userName);
+    })
   })
+
 
   return (
     <div className="App">
@@ -19,9 +24,9 @@ function App() {
 
       }
       {globalChat &&
-        <GlobalChat />
-      }
-      {/* <div id="Header">
+        <GlobalChat name={name}/>
+        }
+          {/* <div id="Header">
         <div id="UserName">
           {name}
         </div>
@@ -32,7 +37,7 @@ function App() {
           <button id="ToggleButton" onClick={loadUsers}>Users</button>
         </div>
       </div> */}
-      {/* <Messages name={name}/>
+          {/* <Messages name={name}/>
       <InputMessages name={name} /> */}
     </div>
   );

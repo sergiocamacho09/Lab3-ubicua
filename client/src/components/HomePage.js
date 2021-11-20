@@ -9,9 +9,13 @@ export function HomePage() {
 
 
     useEffect(() => {
-        let newUser = generate.name();
-        setName(newUser);
-        socket.emit("newUser", newUser);
+        let isCancelled = false;
+        if (!isCancelled) {
+            let newUser = generate.name();
+            setName(newUser);
+            socket.emit("newUser", newUser);
+        }
+        return () => isCancelled = true;
     }, []);
 
     useEffect(() => {
@@ -21,7 +25,7 @@ export function HomePage() {
         });
     })
 
-    function globalChat(){
+    function globalChat() {
         socket.emit("globalChat", name);
     }
     return (
