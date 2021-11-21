@@ -41,8 +41,10 @@ function App() {
     socket.on("message_evt", (msgObject) => {
       setMessages([...messages, msgObject]);
     })
+    /*AQUI SOLO ENTRA LA PRIMERA VEZ */
+    console.log("ENTRA");   
     return () => { socket.off() };
-  }, []);
+  } );
 
 
   

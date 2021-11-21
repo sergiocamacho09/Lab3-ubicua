@@ -4,16 +4,17 @@ import socket from './Socket';
 // let messageList = [];
 export function Messages(props) {
     /*That array saves all current app messages*/
-    const [messages, setMessages] = useState([]);
+    // const [messages, setMessages] = useState([]);
 
-    useEffect(() => {
-        setMessages([...messages,props.messages]);
-    },[]);
+    // useEffect(() => {
+    //     setMessages([...messages,props.messages]);
+    // },[]);
 
+    console.log(props.messages);
 
     return (
         <div id="GlobalChat">
-            {messages.map((msg, i) => {
+            {props.messages.map((msg, i) => {
                 if (msg.name === props.name) {
                     return (
                         <div className="MyMessageContainer">
