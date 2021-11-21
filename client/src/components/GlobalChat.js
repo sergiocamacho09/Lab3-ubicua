@@ -12,8 +12,8 @@ export function GlobalChat(props) {
 
     return (
         <div id="GlobalChatContainer">
-            <Messages name={props.name} messages={props.messages}/>
-            <InputMessages name={props.name} />
+            <Messages name={props.name} messages={props.messages} currentPage={props.currentPage}/>
+            <InputMessages name={props.name} currentPage={props.currentPage}/>
         </div>
     )
 }

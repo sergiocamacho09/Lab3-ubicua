@@ -1,11 +1,13 @@
 import React from "react";
-import socket from "./Socket";
+import { Messages } from "./Messages";
+import { InputMessages } from "./InputMessages";
 
-export function PrivateChat(){
+export function PrivateChat(props){
 
     return(
         <div>
-            ñaldkfjañlsdkjfaslñkdjf
+            <Messages name={props.name} privateMessages={props.privateMessages} currentPage={props.currentPage} id={props.id}/>
+            <InputMessages name={props.name} currentPage={props.currentPage} id={props.id}/>
         </div>
     )
 }

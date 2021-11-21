@@ -1,10 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import { InputMessages } from "./components/InputMessages";
 import socket from "./components/Socket";
-import { Messages } from "./components/Messages";
 import { HomePage } from "./components/HomePage";
-import { GlobalChat } from "./components/GlobalChat";
 const Chance = require('chance');
 const generate = new Chance();
 
@@ -13,6 +10,7 @@ function App() {
   const [userList, setUsers] = useState([]);
 
   const [messages, setMessages] = useState([]);
+  const [privateMessages, setPrivateMessages] = useState([]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -21,11 +19,6 @@ function App() {
       setName(newUser);
       socket.emit("newUser", newUser);
     }
-    // socket.emit("usersConnected");
-    // socket.on("userList", (array) => {
-    //   setUsers(array);
-    // });
-    console.log("ENTRA");
     return () => isCancelled = true;
   }, []);
 
@@ -36,29 +29,37 @@ function App() {
     });
   });
 
+  /*LOS MENSAJES SE RECIBEN PERO NO SE IMPRIMEN*/
+  useEffect(() => {
+    socket.on("message_evt_private", (msgObject) => {
+      console.log("ser reciben los msg privados");
+      setPrivateMessages([...privateMessages, msgObject]);
+    })
+    return () => { socket.off() };
+  }, [privateMessages]);
 
   useEffect(() => {
     socket.on("message_evt", (msgObject) => {
+      console.log("ser reciben los msg globales");
       setMessages([...messages, msgObject]);
     })
-    /*AQUI SOLO ENTRA LA PRIMERA VEZ */
-    console.log("ENTRA");   
     return () => { socket.off() };
-  } );
+  }, [messages]);
+
+ 
 
 
-  
   return (
     <div className="App">
-      <HomePage name={name} userlist={userList} msgs={messages}/>
+      <HomePage name={name} userlist={userList} messages={messages} privateMessages={privateMessages}/>
       {/* {globalChat === "HomePage" &&
         <div>
           <button onClick={<ChangeScreen newPage="GlobalChat"/>}>Global Chat</button>
           <HomePage name={name} userlist={userList} messages={messages} /></div>
       }
       {/* {globalChat === "GlobalChat" && */}
-        {/* <GlobalChat name={name} />
-      } */} 
+      {/* <GlobalChat name={name} />
+      } */}
       {/* <div id="Header">
         <div id="UserName">
           {name}
