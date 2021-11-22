@@ -44,6 +44,10 @@ io.on("connection", function (socket) {
     socket.emit("inGlobalChat", actualPage, name);
   });
 
+  socket.on("goHomePage", ()=>{
+    console.log("Entra");
+    socket.emit("isTrivial", false);
+  })
 
   socket.on("disconnect", () => {
     console.log("Usuario desconectado del socket: " + socket.id);
@@ -67,6 +71,6 @@ setInterval(function () {
       io.to(usersConnected[selectUser].id).emit("trivial", json);
     })
   }
-}, 10000);
+}, 70000);
 
 server.listen(3001, () => console.log('server started'));

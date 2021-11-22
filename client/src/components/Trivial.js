@@ -1,15 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import socket from "./Socket";
 
 export function Trivial(props) {
 
     function checkAnswer(answer) {
         if (answer !== props.trivial.correct_answer) {
+            alert("Has sido desconectado");
+            clearTimeout(props.timeId);
             socket.disconnect();
         }else{
+            console.log("correct");
+            socket.emit("goHomePage");
             clearTimeout(props.timeId);
+           
         }
-
     }
 
     return (
@@ -17,7 +21,7 @@ export function Trivial(props) {
             <p>{props.trivial.question}</p>
             {props.possiblesAnswer.map((payload) => {
                 return (
-                    <button class="Answer" onClick={() => checkAnswer(payload)}>{payload}</button>
+                    <button className="Answer" onClick={() => checkAnswer(payload)}>{payload}</button>
                 )
             })}
         </div>

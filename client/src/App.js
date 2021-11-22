@@ -42,21 +42,25 @@ function App() {
       privateMessagesAux.push(msgObject)
       setPrivateMessages(privateMessagesAux);
     })
+    socket.on("isTrivial", data => {
+      setGoTrivial(data);
+    })
 
     socket.on("trivial", data => {
       setTrivial(data.results[0]);
       let possiblesAnswers = [];
       possiblesAnswers.push(data.results[0].correct_answer);
-      for(var i = 0; i < data.results[0].incorrect_answers.length; i++){
+      for (var i = 0; i < data.results[0].incorrect_answers.length; i++) {
         possiblesAnswers.push(data.results[0].incorrect_answers[i]);
       }
 
       possiblesAnswers = shuffle(possiblesAnswers);
       setPossiblesAnswers(possiblesAnswers);
       setGoTrivial(true);
-      var id = setTimeout(()=>{
+      var id = setTimeout(() => {
+        alert("Has sido desconectado");
         socket.disconnect();
-      }, 9500);
+      }, 15000);
       setTimeId(id);
     })
 
@@ -68,17 +72,17 @@ function App() {
   });
 
   function shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
-  
+    let currentIndex = array.length, randomIndex;
+
     while (currentIndex != 0) {
-  
+
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-  
+
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
     }
-  
+
     return array;
   }
 
@@ -88,7 +92,7 @@ function App() {
         <HomePage name={name} userlist={userList} messages={messages} privateMessages={privateMessages} />
       }
       {goTrivial === true &&
-        <Trivial trivial={trivial} possiblesAnswer={possiblesAnswers} timeId={timeId}/>
+        <Trivial trivial={trivial} possiblesAnswer={possiblesAnswers} timeId={timeId} />
       }
     </div>
   );
