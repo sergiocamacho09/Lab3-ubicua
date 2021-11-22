@@ -37,15 +37,15 @@ function App() {
       privateMessagesAux.push(msgObject)
       setPrivateMessages(privateMessagesAux);
     })
+    
     return () => isCancelled = true;
   }, []);
-
 
   useEffect(() => {
     socket.emit("usersConnected");
   });
 
-  
+
 
 
   return (
