@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import socket from './Socket';
+import React from 'react';
 
-// let messageList = [];
 export function Messages(props) {
     /*That array saves all current app messages*/
     // const [messages, setMessages] = useState([]);
@@ -15,25 +13,26 @@ export function Messages(props) {
             {props.currentPage === "PrivateChat" &&
                 <div>
                     {props.privateMessages.map((msg, i) => {
-                        if (msg.id === props.myId) {
-                            return (
-                                <div className="MyMessageContainer">
-                                    <div className="myMessage">
-                                        <p key={i}>{msg.msg}</p>
+                        if (msg.room === (props.id+props.myId) || msg.room === (props.myId+props.id)) {
+                            if (msg.from === props.myId) {
+                                return (
+                                    <div className="MyMessageContainer">
+                                        <div className="myMessage">
+                                            <p key={i}>{msg.msg}</p>
+                                        </div>
                                     </div>
-                                </div>
 
-                            );
-                        } else {
-                            return (
-                                <div className="ExternalMessageContainer">
-                                    <div className="externalMessage">
-                                        <p className="userName">{msg.name}</p>
-                                        <p key={i}>{msg.msg}</p>
+                                );
+                            } else {
+                                return (
+                                    <div className="ExternalMessageContainer">
+                                        <div className="externalMessage">
+                                            <p key={i}>{msg.msg}</p>
+                                        </div>
                                     </div>
-                                </div>
 
-                            );
+                                );
+                            }
                         }
                     })
 

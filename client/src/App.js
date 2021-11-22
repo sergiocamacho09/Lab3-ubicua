@@ -7,7 +7,6 @@ const generate = new Chance();
 
 function App() {
   const [name, setName] = useState("");
-  const [myId, setMyId] = useState("");
   const [userList, setUsers] = useState([]);
 
   const [messages, setMessages] = useState([]);
@@ -30,7 +29,14 @@ function App() {
       messagesAux.push(msgObject)
       setMessages(messagesAux);
     })
-   
+    socket.on("message_evt_private", (msgObject) => {
+      privateMessagesAux.push(msgObject)
+      setPrivateMessages(privateMessagesAux);
+    })
+    socket.on("message_evt_private_mine", (msgObject) => {
+      privateMessagesAux.push(msgObject)
+      setPrivateMessages(privateMessagesAux);
+    })
     return () => isCancelled = true;
   }, []);
 
@@ -39,40 +45,12 @@ function App() {
     socket.emit("usersConnected");
   });
 
-  /*LOS MENSAJES SE RECIBEN PERO NO SE IMPRIMEN*/
-  useEffect(() => {
-    socket.on("message_evt_private", (msgObject) => {
-      privateMessagesAux.push(msgObject)
-      setPrivateMessages(privateMessagesAux);
-    })
-    return () => { socket.off() };
-  }, []);
+  
 
 
   return (
     <div className="App">
       <HomePage name={name} userlist={userList} messages={messages} privateMessages={privateMessages} />
-      {/* {globalChat === "HomePage" &&
-        <div>
-          <button onClick={<ChangeScreen newPage="GlobalChat"/>}>Global Chat</button>
-          <HomePage name={name} userlist={userList} messages={messages} /></div>
-      }
-      {/* {globalChat === "GlobalChat" && */}
-      {/* <GlobalChat name={name} />
-      } */}
-      {/* <div id="Header">
-        <div id="UserName">
-          {name}
-        </div>
-        <div id="UsersList">
-
-        </div>
-        <div id="ViewUsers">
-          <button id="ToggleButton" onClick={loadUsers}>Users</button>
-        </div>
-      </div> */}
-      {/* <Messages name={name}/>
-      <InputMessages name={name} /> */}
     </div>
   );
 }

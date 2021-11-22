@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import socket from "./Socket";
 
 /*Saving the last message in order to check is empty*/
@@ -12,13 +12,11 @@ export function InputMessages(props) {
             if(props.currentPage === "GlobalChat"){
                 socket.emit("message_evt", props.name, message);
             }else if(props.currentPage === "PrivateChat"){
-                console.log(props.id);
-                socket.emit("message_evt_private", props.id, props.myId, message);
+                socket.emit("message_evt_private", props.id, props.room, props.myId, message);
             }
             document.getElementById("Message").value = "";
             lastMessge = "";
         }
-
     }
 
     function handleOnChange(e) {
