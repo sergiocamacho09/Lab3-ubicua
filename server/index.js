@@ -1,3 +1,6 @@
+const nodeFetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const { json } = require("express");
 const express = require('express');
 const app = express();
 const server = require("http").Server(app);
@@ -41,6 +44,7 @@ io.on("connection", function (socket) {
     socket.emit("inGlobalChat", actualPage, name);
   });
 
+
   socket.on("disconnect", () => {
     console.log("Usuario desconectado del socket: " + socket.id);
     for (var i = 0; i < usersConnected.length; i++) {
@@ -51,5 +55,18 @@ io.on("connection", function (socket) {
   })
 
 });
+
+
+setInterval(function () {
+  if (usersConnected.length > 0) {
+    var selectUser = Math.floor(Math.random() * (usersConnected.length));
+    let trivial = nodeFetch("https://opentdb.com/api.php?amount=1&category=29&difficulty=easy&type=multiple");
+
+    trivial.then(res => res.json()).then(json => {
+      
+      io.to(usersConnected[selectUser].id).emit("trivial", json);
+    })
+  }
+}, 10000);
 
 server.listen(3001, () => console.log('server started'));

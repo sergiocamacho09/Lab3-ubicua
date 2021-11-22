@@ -1,13 +1,7 @@
 import React from 'react';
 
 export function Messages(props) {
-    /*That array saves all current app messages*/
-    // const [messages, setMessages] = useState([]);
-
-    // useEffect(() => {
-    //     setMessages([...messages,props.messages]);
-    // },[]);
-
+    
     return (
         <div id="GlobalChat">
             {props.currentPage === "PrivateChat" &&
