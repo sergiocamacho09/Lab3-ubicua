@@ -15,8 +15,7 @@ export function Messages(props) {
             {props.currentPage === "PrivateChat" &&
                 <div>
                     {props.privateMessages.map((msg, i) => {
-                        if (msg.id === props.id) {
-                            console.log("El mensaje es mio");
+                        if (msg.id === props.myId) {
                             return (
                                 <div className="MyMessageContainer">
                                     <div className="myMessage">
@@ -26,7 +25,6 @@ export function Messages(props) {
 
                             );
                         } else {
-                            console.log("El mensaje no es mio");
                             return (
                                 <div className="ExternalMessageContainer">
                                     <div className="externalMessage">

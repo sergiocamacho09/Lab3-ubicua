@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { GlobalChat } from "./GlobalChat";
 import { PrivateChat } from "./PrivateChat";
-import socket from "./Socket";
 
 export function HomePage(props) {
     const [globalChat, setGlobalChat] = useState("HomePage");
     const [privateChat, setPrivateChat] = useState("");
+    const [myId, setMyId] = useState("");
 
     var userlist = props.userlist;
+
 
     function goGlobalChat() {
         setGlobalChat("GlobalChat");
@@ -17,23 +18,27 @@ export function HomePage(props) {
         setGlobalChat("HomePage");
     }
 
-    function goPrivateChat() {
+    function goPrivateChat(userId) {
         setGlobalChat("PrivateChat");
+        setPrivateChat(userId);
+        
+        console.log(userId);
     }
 
-    function GoPrivateChat(props) {
-        useEffect(()=>{
-            userlist.map((users) => {
-                if (users.name === props.usr) {
-                    setPrivateChat(users.id);
-                }
-            })
-        },[userlist])
+    // function GoPrivateChat(props) {
+    //     useEffect(()=>{
+    //         userlist.map((users) => {
+    //             if (users.name === props.usr) {
+    //                 console.log(users.name);
+    //                 setPrivateChat(users.id);
+    //             }
+    //         })
+    //     },[])
         
-        return (
-            <button className="PrivateChatButton" onClick={goPrivateChat}>{props.usr}</button>
-        );
-    }
+    //     return (
+    //         <button className="PrivateChatButton" onClick={goPrivateChat}>{props.usr}</button>
+    //     );
+    // }
 
     return (
         <div id="HomePageContainer">
@@ -55,8 +60,8 @@ export function HomePage(props) {
                             return (
                                 <div className="UsersList">
                                     <div className="User">
-                                        <GoPrivateChat usr={user.name} />
-                                        {/* <button className="PrivateChatButton" onClick={goPrivateChat}>{user.name}</button> */}
+                                        {/* <GoPrivateChat usr={user.name} /> */}
+                                        <button className="PrivateChatButton" onClick={()=> goPrivateChat(user.id)}>{user.name}</button>
                                     </div>
                                 </div>
                             )
@@ -71,7 +76,7 @@ export function HomePage(props) {
                 <GlobalChat name={props.name} messages={props.messages} currentPage={globalChat} />
             }
             {globalChat === "PrivateChat" &&
-                <PrivateChat name={props.name} privateMessages={props.privateMessages} currentPage={globalChat} id={privateChat} />
+                <PrivateChat name={props.name} myId={myId} privateMessages={props.privateMessages} currentPage={globalChat} id={privateChat} />
             }
 
         </div>

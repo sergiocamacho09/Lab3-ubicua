@@ -20,6 +20,7 @@ io.on("connection", function (socket) {
     console.log("nuevo usuario: " + name + " en el socket " + socket.id);
     userObject = { name: name, id: socket.id };
     usersConnected.push(userObject);
+    console.log(usersConnected);  
   });
 
   socket.on("usersConnected", () => {
@@ -31,8 +32,9 @@ io.on("connection", function (socket) {
     io.sockets.emit("message_evt", { name, msg });
   });
 
-  socket.on("message_evt_private", (id, msg) => {
-    io.to(id).emit("message_evt_private", { id, msg });
+  socket.on("message_evt_private", (id, myId, msg) => {
+    console.log({ myId, msg });
+    socket.to(id).emit("message_evt_private", { myId, msg });
   })
 
   socket.on("globalChat", (actualPage, name) => {

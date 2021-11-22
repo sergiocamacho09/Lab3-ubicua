@@ -7,10 +7,14 @@ const generate = new Chance();
 
 function App() {
   const [name, setName] = useState("");
+  const [myId, setMyId] = useState("");
   const [userList, setUsers] = useState([]);
 
   const [messages, setMessages] = useState([]);
   const [privateMessages, setPrivateMessages] = useState([]);
+
+  let messagesAux = [];
+  let privateMessagesAux = [];
 
   useEffect(() => {
     let isCancelled = false;
@@ -19,39 +23,35 @@ function App() {
       setName(newUser);
       socket.emit("newUser", newUser);
     }
-    return () => isCancelled = true;
-  }, []);
-
-  useEffect(() => {
-    socket.emit("usersConnected");
     socket.on("userList", (array) => {
       setUsers(array);
     });
+    socket.on("message_evt", (msgObject) => {
+      messagesAux.push(msgObject)
+      setMessages(messagesAux);
+    })
+   
+    return () => isCancelled = true;
+  }, []);
+
+
+  useEffect(() => {
+    socket.emit("usersConnected");
   });
 
   /*LOS MENSAJES SE RECIBEN PERO NO SE IMPRIMEN*/
   useEffect(() => {
     socket.on("message_evt_private", (msgObject) => {
-      console.log("ser reciben los msg privados");
-      setPrivateMessages([...privateMessages, msgObject]);
+      privateMessagesAux.push(msgObject)
+      setPrivateMessages(privateMessagesAux);
     })
     return () => { socket.off() };
-  }, [privateMessages]);
-
-  useEffect(() => {
-    socket.on("message_evt", (msgObject) => {
-      console.log("ser reciben los msg globales");
-      setMessages([...messages, msgObject]);
-    })
-    return () => { socket.off() };
-  }, [messages]);
-
- 
+  }, []);
 
 
   return (
     <div className="App">
-      <HomePage name={name} userlist={userList} messages={messages} privateMessages={privateMessages}/>
+      <HomePage name={name} userlist={userList} messages={messages} privateMessages={privateMessages} />
       {/* {globalChat === "HomePage" &&
         <div>
           <button onClick={<ChangeScreen newPage="GlobalChat"/>}>Global Chat</button>
@@ -78,22 +78,6 @@ function App() {
 }
 
 export default App;
-/*
-const socket = io();
-const button = document.querySelector("button");
-const input = document.querySelector("input");
-const msg = document.querySelector("#msg");
-
-button.addEventListener("click", function(e) {
-  const text = input.value;
-  //enviarselo al servidor
-  socket.emit("message_evt", {msg: text});
-});
-
-socket.on("message_evt", function(message){
-  msg.innerHTML = message.msg;
-});
-*/
 
 
 

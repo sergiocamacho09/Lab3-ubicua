@@ -10,13 +10,11 @@ export function InputMessages(props) {
     function handleOnClick() {
         if (lastMessge !== "") {
             if(props.currentPage === "GlobalChat"){
-                console.log("ENTRA EN GLOBAL CHAT");
                 socket.emit("message_evt", props.name, message);
             }else if(props.currentPage === "PrivateChat"){
-                console.log("ENTRA EN PRIVATE CHAT");
-                socket.emit("message_evt_private", props.id, message);
+                console.log(props.id);
+                socket.emit("message_evt_private", props.id, props.myId, message);
             }
-            
             document.getElementById("Message").value = "";
             lastMessge = "";
         }
