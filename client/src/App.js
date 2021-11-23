@@ -21,6 +21,7 @@ function App() {
   let privateMessagesAux = [];
 
   useEffect(() => {
+    /*Creating a new user when he/she go into the app */
     let isCancelled = false;
     if (!isCancelled) {
       let newUser = generate.name();
@@ -30,22 +31,27 @@ function App() {
     socket.on("userList", (array) => {
       setUsers(array);
     });
+    /*Pushing global chat's messages */
     socket.on("message_evt", (msgObject) => {
       messagesAux.push(msgObject)
       setMessages(messagesAux);
     })
+    /**External messages in private chat */
     socket.on("message_evt_private", (msgObject) => {
       privateMessagesAux.push(msgObject)
       setPrivateMessages(privateMessagesAux);
     })
+    /**Mine messages in global chat */
     socket.on("message_evt_private_mine", (msgObject) => {
       privateMessagesAux.push(msgObject)
       setPrivateMessages(privateMessagesAux);
     })
+    /*Event that tell us if we are going to the trivial or not*/
     socket.on("isTrivial", data => {
       setGoTrivial(data);
     })
 
+    /*Set the trivial listener */
     socket.on("trivial", data => {
       setTrivial(data.results[0]);
       let possiblesAnswers = [];
@@ -57,13 +63,14 @@ function App() {
       possiblesAnswers = shuffle(possiblesAnswers);
       setPossiblesAnswers(possiblesAnswers);
       setGoTrivial(true);
+      /**Set a timer that disconnect the user if it does not receive an answer */
       var id = setTimeout(() => {
         alert("Has sido desconectado");
         socket.disconnect();
       }, 15000);
       setTimeId(id);
     })
-
+    
     return () => isCancelled = true;
   }, []);
 
@@ -71,6 +78,7 @@ function App() {
     socket.emit("usersConnected");
   });
 
+  /**Shuffle possibles answers array */
   function shuffle(array) {
     let currentIndex = array.length, randomIndex;
 

@@ -1,10 +1,9 @@
 import React, { useState, useRef } from "react";
-import Popup from 'reactjs-popup';
 import { GlobalChat } from "./GlobalChat";
 import { PrivateChat } from "./PrivateChat";
 
 export function HomePage(props) {
-    const [globalChat, setGlobalChat] = useState("HomePage");
+    const [currentView, setCurrentView] = useState("HomePage");
     const [privateChat, setPrivateChat] = useState("");
     const [myId, setMyId] = useState("");
     const [room, setRoom] = useState("");
@@ -12,15 +11,15 @@ export function HomePage(props) {
     var userlist = props.userlist;
 
     function goGlobalChat() {
-        setGlobalChat("GlobalChat");
+        setCurrentView("GlobalChat");
     }
 
     function goHomePage() {
-        setGlobalChat("HomePage");
+        setCurrentView("HomePage");
     }
 
     function goPrivateChat(userId) {
-        setGlobalChat("PrivateChat");
+        setCurrentView("PrivateChat");
         setPrivateChat(userId);
         userlist.map((user) => {
             if (user.name === props.name) {
@@ -36,12 +35,12 @@ export function HomePage(props) {
                 <div id="UserName">
                     {props.name}
                 </div>
-                {globalChat !== "HomePage" &&
+                {currentView !== "HomePage" &&
                     <button onClick={goHomePage}>🡰</button>
                 }
             </div>
 
-            {globalChat === "HomePage" &&
+            {currentView === "HomePage" &&
                 <div id="HomePageContent">
                     <div id="GlobalChatButton">
                         <button id="GoToGlobalChat" onClick={goGlobalChat}>Global Chat</button>
@@ -59,12 +58,12 @@ export function HomePage(props) {
                     })}
                 </div>
             }
-            {globalChat === "GlobalChat" &&
+            {currentView === "GlobalChat" &&
 
-                <GlobalChat name={props.name} messages={props.messages} currentPage={globalChat} />
+                <GlobalChat name={props.name} messages={props.messages} currentPage={currentView} />
             }
-            {globalChat === "PrivateChat" &&
-                <PrivateChat name={props.name} room={room} myId={myId} privateMessages={props.privateMessages} currentPage={globalChat} id={privateChat} />
+            {currentView === "PrivateChat" &&
+                <PrivateChat name={props.name} room={room} myId={myId} privateMessages={props.privateMessages} currentPage={currentView} id={privateChat} />
             }
         </div>
     )

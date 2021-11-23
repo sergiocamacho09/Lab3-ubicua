@@ -12,6 +12,9 @@ export function InputMessages(props) {
         let lastX = 0;
         let lastY = 0;
         let lastZ = 0;
+        var direction = "";
+        var leftCounter = 0;
+        var rightCounter = 0;
 
         // let lastTime = new Date();
 
@@ -66,6 +69,30 @@ export function InputMessages(props) {
                 console.log(err);
             }
         }
+
+        document.addEventListener("mousemove", function (e) {
+            var oldx = 0;
+            if (timeId.current !== null) {
+                if (e.movementX < oldx) {
+                    direction = "left";
+                    leftCounter++;
+                } else if (e.movementX > oldx) {
+                    direction = "right";
+                    rightCounter++;
+                }
+
+                oldx = e.pageX;
+
+                if (leftCounter >= 120 && rightCounter >= 120) {
+                    clearTimeout(timeId.current);
+                    timeId.current = null;
+                    leftCounter = 0;
+                    rightCounter = 0;
+                }
+            }
+
+
+        })
     }, []);
 
     function handleOnClick() {
